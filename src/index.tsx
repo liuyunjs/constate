@@ -16,6 +16,7 @@ type Provider<Props, Value> = React.FC<Props> & {
   useProvider: (
     props?: Props
   ) => [(element: React.ReactNode) => React.ReactElement, Value];
+  FromValue: React.FC<{ value: Value }>;
 };
 
 // const [Provider, useCounterContext] = constate(...)
@@ -70,7 +71,7 @@ export function constate<Props, Value, Selectors extends Selector<Value>[]>(
     createContext(useValue.name);
   }
 
-  const ConstateProviderBase: React.FC<{ value: Value }> = ({
+  const ConstateProviderFromValue: React.FC<{ value: Value }> = ({
     value,
     children,
   }) => {
@@ -87,18 +88,22 @@ export function constate<Props, Value, Selectors extends Selector<Value>[]>(
 
   const ConstateProvider: Provider<Props, Value> = ({ children, ...props }) => {
     return (
-      <ConstateProviderBase value={useValue(props as Props)}>
+      <ConstateProviderFromValue value={useValue(props as Props)}>
         {children}
-      </ConstateProviderBase>
+      </ConstateProviderFromValue>
     );
   };
+
+  ConstateProvider.FromValue = ConstateProviderFromValue;
 
   ConstateProvider.useProvider = (props?: Props) => {
     const value = useValue(props!);
 
     const inject = (element: React.ReactNode) => {
       return (
-        <ConstateProviderBase value={value}>{element}</ConstateProviderBase>
+        <ConstateProviderFromValue value={value}>
+          {element}
+        </ConstateProviderFromValue>
       );
     };
 
@@ -108,6 +113,7 @@ export function constate<Props, Value, Selectors extends Selector<Value>[]>(
   if (process.env.NODE_ENV !== "production") {
     if (useValue.name) {
       ConstateProvider.displayName = "Constate";
+      ConstateProviderFromValue.displayName = "ConstateFromValue";
     }
   }
 
