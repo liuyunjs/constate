@@ -32,15 +32,15 @@ type ConstateTuple<Props, Value, Selectors extends Selector<Value>[]> = [
   ...Hooks<Value, Selectors>
 ];
 
-const isDev = process.env.NODE_ENV !== "production";
-
 const NO_PROVIDER = {};
 
 function createUseContext(context: React.Context<any>): any {
   return () => {
     const value = React.useContext(context);
-    if (isDev && value === NO_PROVIDER) {
-      console.warn("Component must be wrapped with Provider.");
+    if (process.env.NODE_ENV !== "production") {
+      if (value === NO_PROVIDER) {
+        console.warn("Component must be wrapped with Provider.");
+      }
     }
     return value;
   };
@@ -55,8 +55,10 @@ export function constate<Props, Value, Selectors extends Selector<Value>[]>(
 
   const createContext = (displayName: string) => {
     const context = React.createContext(NO_PROVIDER);
-    if (isDev && displayName) {
-      context.displayName = displayName;
+    if (process.env.NODE_ENV !== "production") {
+      if (displayName) {
+        context.displayName = displayName;
+      }
     }
     contexts.push(context);
     hooks.push(createUseContext(context));
@@ -103,8 +105,10 @@ export function constate<Props, Value, Selectors extends Selector<Value>[]>(
     return [inject, value];
   };
 
-  if (isDev && useValue.name) {
-    ConstateProvider.displayName = "Constate";
+  if (process.env.NODE_ENV !== "production") {
+    if (useValue.name) {
+      ConstateProvider.displayName = "Constate";
+    }
   }
 
   return [ConstateProvider, ...hooks];
