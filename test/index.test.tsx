@@ -33,6 +33,34 @@ test("no selectors", () => {
   expect(getByText("2")).toBeDefined();
 });
 
+test("no selectors use inject", () => {
+  const [CounterProvider, useCounterContext] = constate(useCounter);
+  const Increment = () => {
+    const { increment } = useCounterContext();
+    return <button onClick={increment}>Increment</button>;
+  };
+  const Count = () => {
+    const { count } = useCounterContext();
+    return <div>{count}</div>;
+  };
+
+  const App = () => {
+    const [inject] = CounterProvider.useProvider();
+    return inject(
+      <>
+        <Increment />
+        <Count />
+      </>
+    );
+  };
+  const { getByText } = render(<App />);
+  expect(getByText("0")).toBeDefined();
+  fireEvent.click(getByText("Increment"));
+  expect(getByText("1")).toBeDefined();
+  fireEvent.click(getByText("Increment"));
+  expect(getByText("2")).toBeDefined();
+});
+
 test("single selector", () => {
   const [CounterProvider, useCount] = constate(
     useCounter,
@@ -47,6 +75,24 @@ test("single selector", () => {
       <Count />
     </CounterProvider>
   );
+  const { getByText } = render(<App />);
+  expect(getByText("10")).toBeDefined();
+});
+
+test("single selector use inject", () => {
+  const [CounterProvider, useCount] = constate(
+    useCounter,
+    (value) => value.count
+  );
+  const Count = () => {
+    const count = useCount();
+    return <div>{count}</div>;
+  };
+
+  const App = () => {
+    const [inject] = CounterProvider.useProvider({ initialCount: 10 });
+    return inject(<Count />);
+  };
   const { getByText } = render(<App />);
   expect(getByText("10")).toBeDefined();
 });
@@ -71,6 +117,37 @@ test("two selectors", () => {
       <Count />
     </CounterProvider>
   );
+  const { getByText } = render(<App />);
+  expect(getByText("10")).toBeDefined();
+  fireEvent.click(getByText("Increment"));
+  expect(getByText("11")).toBeDefined();
+  fireEvent.click(getByText("Increment"));
+  expect(getByText("12")).toBeDefined();
+});
+
+test("two selectors use inject", () => {
+  const [CounterProvider, useCount, useIncrement] = constate(
+    useCounter,
+    (value) => value.count,
+    (value) => value.increment
+  );
+  const Increment = () => {
+    const increment = useIncrement();
+    return <button onClick={increment}>Increment</button>;
+  };
+  const Count = () => {
+    const count = useCount();
+    return <div>{count}</div>;
+  };
+  const App = () => {
+    const [inject] = CounterProvider.useProvider({ initialCount: 10 });
+    return inject(
+      <>
+        <Increment />
+        <Count />
+      </>
+    );
+  };
   const { getByText } = render(<App />);
   expect(getByText("10")).toBeDefined();
   fireEvent.click(getByText("Increment"));
