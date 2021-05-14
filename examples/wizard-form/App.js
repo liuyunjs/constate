@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import constate from "constate";
+import constate from "@liuyunjs/constate";
 
 const [StepProvider, useStepContext] = constate(useStep);
 const [FormProvider, useFormContext, useFormValues] = constate(

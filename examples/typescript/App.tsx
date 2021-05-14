@@ -1,6 +1,6 @@
 // It just works! No need to type anything explicitly.
 import * as React from "react";
-import constate from "constate";
+import constate from "@liuyunjs/constate";
 
 function useCounter({ initialCount = 0 } = {}) {
   const [count, setCount] = React.useState(initialCount);

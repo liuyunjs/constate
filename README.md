@@ -38,7 +38,7 @@ Write local state using [React Hooks](https://reactjs.org/docs/hooks-intro.html)
 
 ```jsx
 import React, { useState } from "react";
-import constate from "constate";
+import constate from "@liuyunjs/constate";
 
 // 1️⃣ Create a custom hook as usual
 function useCounter() {
@@ -63,6 +63,14 @@ function Count() {
 }
 
 function App() {
+    // const [inject] = CounterProvider.useProvider();
+
+  // return inject(
+  //   <>
+  //     <Count />
+  //     <Button />
+  //   </>
+  // )
   // 5️⃣ Wrap your components with Provider
   return (
     <CounterProvider>
@@ -79,7 +87,7 @@ function App() {
 
 ```jsx
 import React, { useState, useCallback } from "react";
-import constate from "constate";
+import constate from "@liuyunjs/constate";
 
 // 1️⃣ Create a custom hook that receives props
 function useCounter({ initialCount = 0 }) {
@@ -109,6 +117,15 @@ function Count() {
 }
 
 function App() {
+  // const [inject] = CounterProvider.useProvider({initialCount: 10});
+
+  // return inject(
+  //   <>
+  //     <Count />
+  //     <Button />
+  //   </>
+  // )
+
   // 6️⃣ Wrap your components with Provider passing props to your hook
   return (
     <CounterProvider initialCount={10}>
@@ -147,7 +164,7 @@ It's any [custom hook](https://reactjs.org/docs/hooks-custom.html):
 
 ```js
 import { useState } from "react";
-import constate from "constate";
+import constate from "@liuyunjs/constate";
 
 const [CountProvider, useCountContext] = constate(() => {
   const [count] = useState(0);
@@ -164,6 +181,12 @@ const [CountProvider, useCountContext] = constate(({ initialCount = 0 }) => {
 });
 
 function App() {
+  // const [inject] = CounterProvider.useProvider({initialCount: 10});
+
+  // return inject(
+  //   ...
+  // )
+
   return (
     <CountProvider initialCount={10}>
       ...
@@ -189,7 +212,7 @@ A `selector` function receives the value returned by [`useValue`](#usevalue) and
 
 ```jsx
 import React, { useState, useCallback } from "react";
-import constate from "constate";
+import constate from "@liuyunjs/constate";
 
 function useCounter() {
   const [count, setCount] = useState(0);

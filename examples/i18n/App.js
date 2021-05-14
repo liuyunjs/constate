@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import constate from "constate";
+import constate from "@liuyunjs/constate";
 
 const translations = {
   en: {

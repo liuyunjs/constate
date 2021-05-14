@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import constate from "constate";
+import constate from "@liuyunjs/constate";
 
 // 1️⃣ Create a custom hook as usual
 function useCounter() {
@@ -24,6 +24,14 @@ function Count() {
 }
 
 function App() {
+  // const [inject] = CounterProvider.useProvider();
+  // return inject(
+  //   <>
+  //     <Count />
+  //     <Button />
+  //   </>
+  // );
+
   // 5️⃣ Wrap your components with Provider
   return (
     <CounterProvider>

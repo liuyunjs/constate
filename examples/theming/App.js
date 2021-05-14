@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { GithubPicker } from "react-color";
-import constate from "constate";
+import constate from "@liuyunjs/constate";
 
 const [ThemeProvider, useThemeContext, useThemeColor] = constate(
   (props) => useState(props.initialColor),

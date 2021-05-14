@@ -14,7 +14,7 @@
     "react-dom": "17.0.1"
   },
   "alias": {
-    "constate": "../src",
+    "@liuyunjs/constate": "../src",
     "react": "./node_modules/react",
     "react-dom": "./node_modules/react-dom"
   }
